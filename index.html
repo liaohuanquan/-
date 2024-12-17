@@ -476,5 +476,26 @@
       );
     mainTl.add(starTl, 0);
     gsap.globalTimeline.timeScale(1.5);
+    // 拦截 setTimeout
+const originalSetTimeout = window.setTimeout;
+window.setTimeout = function (fn, ...args) {
+  if (typeof fn === 'function') {
+    return originalSetTimeout(function () {
+      console.log('阻止了 setTimeout 跳转');
+      // 可以在这里添加其他逻辑
+    }, ...args);
+  }
+  return originalSetTimeout(fn, ...args);
+};
+
+// 拦截 window.location.href
+const originalHref = window.location.href;
+Object.defineProperty(window.location, 'href', {
+  get: () => originalHref,
+  set: (value) => {
+    console.log('阻止了 window.location.href 跳转');
+    // 可以在这里添加其他逻辑
+  }
+});
   </script>
 </html>
